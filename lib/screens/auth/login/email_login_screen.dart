@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:littoon/screens/auth/login/sns_login_screen.dart';
 
 class EmailLoginScreen extends StatelessWidget {
   const EmailLoginScreen({super.key});
