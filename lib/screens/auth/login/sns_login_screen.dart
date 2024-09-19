@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:kakao_flutter_sdk_user/kakao_flutter_sdk_user.dart';
+import 'package:littoon/screens/auth/auth_confirm/auth_confirm.dart';
 import 'package:littoon/screens/auth/login/email_login_screen.dart';
 import 'package:littoon/screens/auth/signup/email_signup_screen.dart';
 import 'package:littoon/screens/auth/userinfo/user_interest.dart';
@@ -12,20 +13,23 @@ class SocialLogInScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => Home()));
-          },
-          icon: Image.asset(
-            'assets/icons/lit icon=X.png',
-            width: 22.w,
-            height: 22.h,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(45.h),
+        child: AppBar(
+          centerTitle: true,
+          leading: IconButton(
+            onPressed: () {
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (context) => Home()));
+            },
+            icon: Image.asset(
+              'assets/icons/lit icon=X.png',
+              width: 22.w,
+              height: 22.h,
+            ),
           ),
+          automaticallyImplyLeading: false,
         ),
-        automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -43,7 +47,7 @@ class SocialLogInScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 23.44.h,
+              height: 16.44.h,
             ),
             Row(
               children: [
@@ -55,7 +59,7 @@ class SocialLogInScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 18.h,
+              height: 14.h,
             ),
             Center(
               child: Image.asset(
@@ -65,15 +69,13 @@ class SocialLogInScreen extends StatelessWidget {
               ),
             ),
             SizedBox(
-              height: 21.h,
+              height: 20.h,
             ),
             Text(
               "로그인하면 내가 본 작품을 저장하고, \n내 작품을 올릴 수 있어요",
               textAlign: TextAlign.center,
               style: TextStyle(
-                fontSize: 16.sp,
-                color: Color(0xff070707),
-              ),
+                  fontSize: 16.sp, color: Color(0xff070707), height: 1.3),
             ),
             SizedBox(
               height: 7.h,
@@ -89,18 +91,18 @@ class SocialLogInScreen extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 10.h,
+              height: 9.h,
             ),
             GestureDetector(
-                // onTap: () {
-                //   _loginWithKakao(context);
-                // },
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => UserInterestScreen()));
+                  _loginWithKakao(context);
                 },
+                // onTap: () {
+                //   Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //           builder: (context) => UserInterestScreen()));
+                // },
                 child: SizedBox(
                   child: Image.asset('assets/images/카카오로그인.png'),
                 )),
@@ -193,59 +195,59 @@ class SocialLogInScreen extends StatelessWidget {
     );
   }
 
-  // Future<void> _loginWithKakao(BuildContext context) async {
-  //   _showLoadingDialog(context); // 로딩 다이얼로그 표시
-  //   try {
-  //     bool isInstalled = await isKakaoTalkInstalled();
-  //     OAuthToken token;
-  //     if (isInstalled) {
-  //       token = await UserApi.instance.loginWithKakaoTalk();
-  //     } else {
-  //       token = await UserApi.instance.loginWithKakaoAccount();
-  //     }
-  //     print('Login success: ${token.accessToken}');
-  //     Navigator.pushReplacement(
-  //       context,
-  //       MaterialPageRoute(builder: (context) => Home()),
-  //     );
-  //   } catch (e) {
-  //     print('Login failed: $e');
-  //     _hideLoadingDialog(context); // 로딩 다이얼로그 숨기기
-  //   }
-  // }
+  Future<void> _loginWithKakao(BuildContext context) async {
+    _showLoadingDialog(context); // 로딩 다이얼로그 표시
+    try {
+      bool isInstalled = await isKakaoTalkInstalled();
+      OAuthToken token;
+      if (isInstalled) {
+        token = await UserApi.instance.loginWithKakaoTalk();
+      } else {
+        token = await UserApi.instance.loginWithKakaoAccount();
+      }
+      print('Login success: ${token.accessToken}');
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => UserConfirmScreen()),
+      );
+    } catch (e) {
+      print('Login failed: $e');
+      _hideLoadingDialog(context); // 로딩 다이얼로그 숨기기
+    }
+  }
 
-  // void _showLoadingDialog(BuildContext context) {
-  //   showDialog(
-  //     context: context,
-  //     barrierDismissible: false,
-  //     builder: (context) => PopScope(
-  //       canPop: false,
-  //       child: Dialog(
-  //         backgroundColor: Colors.black.withOpacity(0.75), // 배경색을 진하게 설정
-  //         child: Padding(
-  //           padding: const EdgeInsets.all(20.0),
-  //           child: Row(
-  //             mainAxisSize: MainAxisSize.min,
-  //             children: [
-  //               CircularProgressIndicator(
-  //                 valueColor:
-  //                     AlwaysStoppedAnimation<Color>(Colors.white), // 색상 설정
-  //                 strokeWidth: 5.0, // 크기 설정
-  //               ),
-  //               SizedBox(width: 20),
-  //               Text(
-  //                 "Loading...",
-  //                 style: TextStyle(color: Colors.white),
-  //               ),
-  //             ],
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+  void _showLoadingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => PopScope(
+        canPop: false,
+        child: Dialog(
+          backgroundColor: Colors.black.withOpacity(0.75), // 배경색을 진하게 설정
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CircularProgressIndicator(
+                  valueColor:
+                      AlwaysStoppedAnimation<Color>(Colors.white), // 색상 설정
+                  strokeWidth: 5.0, // 크기 설정
+                ),
+                SizedBox(width: 20),
+                Text(
+                  "Loading...",
+                  style: TextStyle(color: Colors.white),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 
-  // void _hideLoadingDialog(BuildContext context) {
-  //   Navigator.pop(context);
-  // }
+  void _hideLoadingDialog(BuildContext context) {
+    Navigator.pop(context);
+  }
 }
