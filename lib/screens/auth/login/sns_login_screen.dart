@@ -169,9 +169,6 @@ class SocialLogInScreen extends StatelessWidget {
                 ),
               ],
             ),
-            SizedBox(
-              height: 175.h,
-            ),
             TextButton(
               child: Text(
                 "비회원 둘러보기",
